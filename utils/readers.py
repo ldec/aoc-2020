@@ -1,5 +1,5 @@
 from os.path import isfile
-from typing import List, Any
+from typing import List, Any, Optional
 
 
 class Reader:
@@ -46,14 +46,19 @@ class OneColumnFileReader(FileReader):
     3
     """
 
-    def read(self, *args, type_to_cast: Any = None, **kwargs) -> List:
+    def read(
+        self, *args, type_to_cast: Any = None, sort: bool = False, **kwargs
+    ) -> List:
         """
         Implementation of a one column data file read function
 
         :param type_to_cast: Optional type casting for each line
+        :param sort: Sort the list
         """
         data = super(OneColumnFileReader, self).read()
         split_data = [line for line in data.splitlines() if line]
         if type_to_cast is not None:
             split_data = list(map(type_to_cast, split_data))
+        if sort:
+            split_data = sorted(split_data)
         return split_data
